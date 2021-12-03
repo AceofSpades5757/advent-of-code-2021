@@ -3,6 +3,7 @@ import configparser
 import itertools
 from pathlib import Path
 from typing import Final
+from typing import Iterable
 from typing import Iterator
 
 
@@ -11,7 +12,7 @@ config: configparser.ConfigParser = configparser.ConfigParser()
 config.read(CONFIG_FILE)
 
 
-def pairwise(iterable) -> Iterator[tuple]:
+def pairwise(iterable: Iterable) -> Iterator[tuple]:
     # From Python itertools documentation
     # pairwise('ABCDEFG') --> AB BC CD DE EF FG
     a, b = itertools.tee(iterable)
@@ -22,7 +23,7 @@ def pairwise(iterable) -> Iterator[tuple]:
 def get_input_data() -> Iterator[str]:
 
     data_path: Path = Path(config.get('paths', 'data'))
-    data_file: Path = data_path / 'puzzle_1.txt'
+    data_file: Path = data_path / 'input_1.txt'
 
     if not data_path.exists():
         data_path.mkdir()
@@ -37,8 +38,11 @@ if __name__ == '__main__':
     input_lines: Iterator[str] = get_input_data()
 
     increase_count: int = 0
-    for depth_1, depth_2 in pairwise(input_lines):
-        if int(depth_1) < int(depth_2):
+    for depths in pairwise(input_lines):
+
+        depth_1, depth_2 = map(int, depths)
+
+        if depth_1 < depth_2:
             increase_count += 1
 
     print(f'ANSWER: {increase_count}')

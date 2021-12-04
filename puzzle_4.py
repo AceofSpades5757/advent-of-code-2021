@@ -48,4 +48,4 @@ if __name__ == '__main__':
             case _:
                 raise ValueError(f'Unknown command: {command.split()}')
 
-    print(f'ANSER: {horizontal_position * depth}')
+    print(f'ANSWER: {horizontal_position * depth}')

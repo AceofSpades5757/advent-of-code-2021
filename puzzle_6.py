@@ -2,14 +2,14 @@
 import configparser
 import itertools
 from collections import Counter
+from os import PathLike
 from pathlib import Path
 from typing import Final
-from typing import Iterator
 from typing import Iterable
-from typing import Protocol
+from typing import Iterator
 from typing import Literal
-from typing import TypeAlias
-from os import PathLike
+from typing import Protocol
+from typing import TypeAlias  # type: ignore
 
 
 CONFIG_FILE: Final[Path] = Path(__file__).parent / 'config.ini'
@@ -21,10 +21,10 @@ Bit: TypeAlias = Literal['0', '1', 0, 1]
 
 
 class IPuzzle(Protocol):
-    """ Protocol for the puzzle """
+    """Protocol for the puzzle"""
 
     def __init__(self) -> None:
-        """ Initialize the puzzle """
+        """Initialize the puzzle"""
         ...
         self._process_data()
         ...
@@ -37,23 +37,21 @@ class IPuzzle(Protocol):
 
 
 class Puzzle:
-
-    def __init__(self, data_file: PathLike = '') -> None:
+    def __init__(self, data_file: PathLike) -> None:
 
         self.data_file: Final[Path] = Path(data_file)
-        self.bit_counters: list[Counter] = []
 
         self._process_data()
 
     def solve(self) -> int:
-        """ Solve the puzzle. """
+        """Solve the puzzle."""
         return self.life_support_rating
 
     def _process_data(self) -> None:
 
-        input_lines: Iterator[str] = self.data
+        input_lines: Iterable[str] = self.data
 
-        first_line: str = next(input_lines)
+        first_line: str = next(input_lines)  # type: ignore
         self.bit_counters: list[Counter] = [
             Counter() for _ in range(len(first_line))
         ]
@@ -69,10 +67,12 @@ class Puzzle:
             for line in fin:
                 yield line.strip()
 
-    def _update_bit_counters(self,
-        line: str, bit_counters: list[Counter] = None,
+    def _update_bit_counters(
+        self,
+        line: str,
+        bit_counters: list[Counter] = None,
     ) -> None:
-        """ Update the counters """
+        """Update the counters"""
 
         if bit_counters is None:
             bit_counters = self.bit_counters
@@ -80,13 +80,15 @@ class Puzzle:
         for index, char in enumerate(line):
             bit_counters[index].update(char)
 
-    def _get_most_common_bit(self,
-        bit_counter: Counter, default_bit: Bit = '0',
+    def _get_most_common_bit(
+        self,
+        bit_counter: Counter,
+        default_bit: Bit = '0',
     ) -> str:
-        """ Get the most common bit """
+        """Get the most common bit"""
 
-        all_equal: bool = (
-            1 == len(list(itertools.groupby(bit_counter.values())))
+        all_equal: bool = 1 == len(
+            list(itertools.groupby(bit_counter.values()))
         )
 
         if all_equal:
@@ -94,13 +96,15 @@ class Puzzle:
 
         return bit_counter.most_common()[0][0]
 
-    def _get_least_common_bit(self,
-        bit_counter: Counter, default_bit: Bit = '0',
+    def _get_least_common_bit(
+        self,
+        bit_counter: Counter,
+        default_bit: Bit = '0',
     ) -> str:
-        """ Get the least common bit """
+        """Get the least common bit"""
 
-        all_equal: bool = (
-            1 == len(list(itertools.groupby(bit_counter.values())))
+        all_equal: bool = 1 == len(
+            list(itertools.groupby(bit_counter.values()))
         )
 
         if all_equal:
@@ -110,16 +114,16 @@ class Puzzle:
 
     @property
     def epsilon(self) -> int:
-        value: str = ''.join([
-            c.most_common()[0][0] for c in self.bit_counters
-        ])
+        value: str = ''.join(
+            [c.most_common()[0][0] for c in self.bit_counters]
+        )
         return int(value, base=2)
 
     @property
     def gamma(self) -> int:
-        value: str = ''.join([
-            c.most_common()[-1][0] for c in self.bit_counters
-        ])
+        value: str = ''.join(
+            [c.most_common()[-1][0] for c in self.bit_counters]
+        )
         return int(value, base=2)
 
     @property
@@ -144,7 +148,7 @@ class Puzzle:
                 default_bit=default_bit,
             )
 
-            data: list[str] = list(
+            data: list[str] = list(  # type: ignore
                 filter(lambda x: x[bit_index] != most_common_bit, data)
             )
             if len(data) == 1:
@@ -173,7 +177,7 @@ class Puzzle:
                 default_bit=default_bit,
             )
 
-            data: list[str] = list(
+            data: list[str] = list(  # type: ignore
                 filter(lambda x: x[bit_index] != least_common_bit, data)
             )
             if len(data) == 1:
@@ -182,9 +186,7 @@ class Puzzle:
         if len(data) == 1:
             return int(data[0], base=2)
         else:
-            raise ValueError(
-                f'No CO2 Scrubber Rating found: {len(data)=}.'
-            )
+            raise ValueError(f'No CO2 Scrubber Rating found: {len(data)=}.')
 
     @property
     def life_support_rating(self) -> int:

@@ -1,17 +1,10 @@
 """ Find the number of times that the depth increased, with a window of 3
 (summed). """
-import configparser
 import itertools
 from pathlib import Path
-from typing import Final
 from typing import Iterable
 from typing import Iterator
 from typing import Union
-
-
-CONFIG_FILE: Final[Path] = Path(__file__).parent / 'config.ini'
-config: configparser.ConfigParser = configparser.ConfigParser()
-config.read(CONFIG_FILE)
 
 
 def pairwise(iterable: Iterable) -> Iterator[tuple]:
@@ -33,11 +26,7 @@ def triplewise(iterable: Iterable) -> Iterator[tuple]:
 
 def get_input_data() -> Iterator[str]:
 
-    data_path: Path = Path(config.get('paths', 'data'))
-    data_file: Path = data_path / 'input_1.txt'
-
-    if not data_path.exists():
-        data_path.mkdir()
+    data_file: Path = Path(__file__).parent / 'input.txt'
 
     with open(data_file, 'r') as fin:
         for line in fin:

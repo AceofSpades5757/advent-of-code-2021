@@ -1,5 +1,4 @@
 """ Get the episilon and gamma values """
-import configparser
 import itertools
 from collections import Counter
 from os import PathLike
@@ -10,11 +9,6 @@ from typing import Iterator
 from typing import Literal
 from typing import Protocol
 from typing import TypeAlias  # type: ignore
-
-
-CONFIG_FILE: Final[Path] = Path(__file__).parent / 'config.ini'
-config: configparser.ConfigParser = configparser.ConfigParser()
-config.read(CONFIG_FILE)
 
 
 Bit: TypeAlias = Literal['0', '1', 0, 1]
@@ -196,8 +190,7 @@ class Puzzle:
 
 if __name__ == '__main__':
 
-    data_path: Path = Path(config.get('paths', 'data'))
-    data_file: Path = data_path / 'input_3.txt'
+    data_file: Path = Path(__file__).parent / 'input.txt'
 
     puzzle: IPuzzle = Puzzle(data_file=data_file)
     solution: int = puzzle.solve()

@@ -1,23 +1,12 @@
 """ Get the episilon and gamma values """
-import configparser
 from collections import Counter
 from pathlib import Path
-from typing import Final
 from typing import Iterator
-
-
-CONFIG_FILE: Final[Path] = Path(__file__).parent / 'config.ini'
-config: configparser.ConfigParser = configparser.ConfigParser()
-config.read(CONFIG_FILE)
 
 
 def get_input_data() -> Iterator[str]:
 
-    data_path: Path = Path(config.get('paths', 'data'))
-    data_file: Path = data_path / 'input_3.txt'
-
-    if not data_path.exists():
-        data_path.mkdir()
+    data_file: Path = Path(__file__).parent / 'input.txt'
 
     with open(data_file, 'r') as fin:
         for line in fin:

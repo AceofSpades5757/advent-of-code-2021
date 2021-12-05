@@ -25,13 +25,13 @@ def get_input_data() -> Iterator[str]:
 
 
 def update_counters(counters: list[Counter], line: str) -> None:
-    """ Update the counters """
+    """Update the counters"""
     for index, char in enumerate(line):
         counters[index].update(char)
 
 
-def get_epsilon_and_gamma(counters: list[Counter]) -> (int, int):
-    """ Get the epsilon and gamma values """
+def get_epsilon_and_gamma(counters: list[Counter]) -> tuple[int, int]:
+    """Get the epsilon and gamma values"""
     epsilon: str = ''.join([c.most_common()[0][0] for c in counters])
     gamma: str = ''.join([c.most_common()[-1][0] for c in counters])
 

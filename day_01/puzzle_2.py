@@ -47,7 +47,7 @@ def get_input_data() -> Iterator[str]:
 def get_windowed_depth_data(
     depth_data: Iterator[Union[str, int]],
 ) -> Iterator[int]:
-    """ Get the depth data, with a window of 3 (summed). """
+    """Get the depth data, with a window of 3 (summed)."""
     for depths in triplewise(depth_data):
 
         sum_: int = sum(map(int, depths))

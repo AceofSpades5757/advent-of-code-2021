@@ -1,4 +1,3 @@
-import configparser
 from os import PathLike
 from pathlib import Path
 from typing import Final
@@ -6,14 +5,10 @@ from typing import Iterable
 from typing import Iterator
 from typing import Literal
 from typing import TypeAlias  # type: ignore
-from typing import Union
 
 import numpy as np
 
 
-CONFIG_FILE: Final[Path] = Path(__file__).parent / 'config.ini'
-config: configparser.ConfigParser = configparser.ConfigParser()
-config.read(CONFIG_FILE)
 Bit: TypeAlias = Literal['0', '1', 0, 1]
 
 
@@ -130,8 +125,7 @@ class Puzzle:
 
 if __name__ == '__main__':
 
-    data_path: Path = Path(config.get('paths', 'data'))
-    data_file: Path = data_path / 'input_4.txt'
+    data_file: Path = Path(__file__).parent / 'input.txt'
 
     puzzle: Puzzle = Puzzle(data_file=data_file)
     solution: int = puzzle.solve()
